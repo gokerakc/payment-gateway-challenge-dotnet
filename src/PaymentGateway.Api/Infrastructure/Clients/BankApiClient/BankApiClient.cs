@@ -23,7 +23,7 @@ public class BankApiClient : IBankApiClient
             ExpiryDate = $"{payment.ExpiryMonth}/{payment.ExpiryYear}",
             Currency = payment.Currency,
             Amount = payment.Amount,
-            Cvv = payment.Cvv.ToString()
+            Cvv = payment.Cvv
         };
         
         var message = new HttpRequestMessage(HttpMethod.Post, "/payments");
@@ -32,10 +32,13 @@ public class BankApiClient : IBankApiClient
 
         if (!response.IsSuccessStatusCode)
         {
-            return ProcessPaymentResult.Error(string.Empty, "An error occured while processing payment.");
+            return ProcessPaymentResult.Error("Acquiring bank could not process the payment at the moment");
         }
         
         var responseContent = await response.Content.ReadFromJsonAsync<BankApiProcessPaymentResponse>();
-        return ProcessPaymentResult.Success(responseContent!.AuthorizationCode);
+
+        return responseContent!.Authorized
+            ? ProcessPaymentResult.Success(responseContent.AuthorizationCode)
+            : ProcessPaymentResult.Unauthorized();
     }
 }

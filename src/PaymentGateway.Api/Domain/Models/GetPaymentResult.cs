@@ -7,6 +7,6 @@ public record GetPaymentResult(Payment? Data, Status Status, string Message) : R
     public static GetPaymentResult Success(Payment data)
         => new GetPaymentResult(data, Status.Success, string.Empty);
     
-    public static GetPaymentResult Error(string message)
-        => new GetPaymentResult(Data: null, Status.Error, message);
+    public static GetPaymentResult NotFound()
+        => new GetPaymentResult(null, Status.NotFound, "Payment not found");
 }

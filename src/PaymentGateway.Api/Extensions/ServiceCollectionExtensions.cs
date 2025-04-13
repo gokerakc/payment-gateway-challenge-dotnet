@@ -1,5 +1,6 @@
 ﻿using PaymentGateway.Api.Constants;
 using PaymentGateway.Api.Domain.Services;
+using PaymentGateway.Api.Features.Payment;
 using PaymentGateway.Api.Infrastructure.Clients.BankApiClient;
 using PaymentGateway.Api.Infrastructure.Storage;
 using PaymentGateway.Api.Ports;
@@ -12,7 +13,7 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddDomainServices(this IServiceCollection services)
     {
         services.AddScoped<IPaymentService, PaymentService>();
-        services.AddScoped<IPaymentValidator, PaymentValidator>();
+        services.AddSingleton<PostPaymentRequestValidator>();
         
         return services;
     }

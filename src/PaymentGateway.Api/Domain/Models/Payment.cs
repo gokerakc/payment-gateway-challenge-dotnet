@@ -4,15 +4,15 @@ public class Payment
 {
     public Guid Id { get; set; }
     
-    public string CardNumber { get; set; } = String.Empty;
+    public string CardNumber { get; set; } = string.Empty;
     
-    public int Cvv { get; set; }
+    public string Cvv { get; set; } = string.Empty;
     
     public int ExpiryMonth { get; set; }
     
     public int ExpiryYear { get; set; }
     
-    public string Currency { get; set; } = String.Empty;
+    public string Currency { get; set; } = string.Empty;
     
     public int Amount { get; set; }
     

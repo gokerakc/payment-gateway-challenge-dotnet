@@ -4,7 +4,7 @@ public enum Status
 {
     Success,
     NotFound,
-    BadRequest,
+    Unauthorized,
     Error
 }
 

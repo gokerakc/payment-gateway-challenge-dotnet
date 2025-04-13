@@ -2,7 +2,7 @@
 
 namespace PaymentGateway.Api.Ports;
 
-public interface IPaymentValidator
+public interface IValidator<in T>
 {
-    public Task<bool> Validate(Payment payment);
+    Task<ValidationResult> Validate(T payment);
 }

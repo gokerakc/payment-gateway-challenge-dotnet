@@ -7,6 +7,9 @@ public record ProcessPaymentResult(string AuthorizationCode, Status Status, stri
     public static ProcessPaymentResult Success(string authorizationCode)
     => new ProcessPaymentResult(authorizationCode, Status.Success, string.Empty);
     
-    public static ProcessPaymentResult Error(string authorizationCode, string message)
-        => new ProcessPaymentResult(authorizationCode, Status.Error, message);
+    public static ProcessPaymentResult Unauthorized()
+        => new ProcessPaymentResult(string.Empty, Status.Unauthorized, "The payment was declined by the call to the acquiring bank");
+    
+    public static ProcessPaymentResult Error(string message)
+        => new ProcessPaymentResult(string.Empty, Status.Error, message);
 }

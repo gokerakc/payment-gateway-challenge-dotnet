@@ -7,33 +7,32 @@ namespace PaymentGateway.Api.Domain.Services;
 
 public class PaymentService : IPaymentService
 {
-    private readonly IPaymentValidator _paymentValidator;
     private readonly IBankApiClient _bankApiClient;
     private readonly IPaymentsRepository _paymentsRepository;
 
-    public PaymentService(IPaymentValidator paymentValidator, IBankApiClient bankApiClient, IPaymentsRepository paymentsRepository)
+    public PaymentService(IBankApiClient bankApiClient, IPaymentsRepository paymentsRepository)
     {
-        _paymentValidator = paymentValidator;
         _bankApiClient = bankApiClient;
         _paymentsRepository = paymentsRepository;
     }
 
     public async Task<MakePaymentResult> MakePayment(Payment payment)
     {
-        if (!await _paymentValidator.Validate(payment))
-            return MakePaymentResult.Error("Payment validation failed");
-
         var processPaymentResult = await _bankApiClient.ProcessPayment(payment);
-        if (processPaymentResult.Status is not Status.Success)
+        switch (processPaymentResult.Status)
         {
-            return MakePaymentResult.Error(processPaymentResult.Message);
-        }   
-        
-        payment.Status = PaymentStatus.Authorized;
-        
-        _paymentsRepository.Add(payment);
-
-        return MakePaymentResult.Success(payment);
+            case Status.Success:
+                payment.Status = PaymentStatus.Authorized;
+                _paymentsRepository.Add(payment);
+                return MakePaymentResult.Success(payment);
+            case Status.Unauthorized:
+                return MakePaymentResult.Unauthorized();
+            case Status.Error:
+                return MakePaymentResult.Error(processPaymentResult.Message);
+            case Status.NotFound:
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
     }
 
     public async Task<GetPaymentResult> GetPayment(Guid paymentId)
@@ -41,7 +40,7 @@ public class PaymentService : IPaymentService
         var data = _paymentsRepository.Get(paymentId);
         if (data is null)
         {
-            return GetPaymentResult.Error("Payment not found");
+            return GetPaymentResult.NotFound();
         }
         
         return GetPaymentResult.Success(data);

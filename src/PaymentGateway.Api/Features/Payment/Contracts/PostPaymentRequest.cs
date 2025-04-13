@@ -1,16 +1,24 @@
-﻿namespace PaymentGateway.Api.Features.Payment.Contracts;
+﻿using System.Text.Json.Serialization;
+
+namespace PaymentGateway.Api.Features.Payment.Contracts;
 
 public class PostPaymentRequest
 {
-    public string CardNumber { get; set; } = string.Empty;
+    [JsonPropertyName("cardNumber")]
+    public required string CardNumber { get; set; }
     
-    public int ExpiryMonth { get; set; }
+    [JsonPropertyName("expiryMonth")]
+    public required int ExpiryMonth { get; set; }
     
-    public int ExpiryYear { get; set; }
+    [JsonPropertyName("expiryYear")]
+    public required int ExpiryYear { get; set; }
     
-    public string Currency { get; set; } = string.Empty;
+    [JsonPropertyName("currency")]
+    public required string Currency { get; set; }
     
-    public int Amount { get; set; }
+    [JsonPropertyName("amount")]
+    public required int Amount { get; set; }
     
-    public int Cvv { get; set; }
+    [JsonPropertyName("cvv")]
+    public required string Cvv { get; set; }
 }

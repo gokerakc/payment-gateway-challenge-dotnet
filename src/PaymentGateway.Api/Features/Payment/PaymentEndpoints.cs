@@ -10,8 +10,8 @@ public static class PaymentEndpoints
 {
     public static void MapPaymentEndpoints(this IEndpointRouteBuilder app)
     {
-        app.MapGet("/api/payments/{id:guid}", GetPaymentDetails)
-            .WithName("GetPaymentDetails")
+        app.MapGet("/api/payments/{id:guid}", GetPayment)
+            .WithName("GetPayment")
             .Produces<GetPaymentResponse>(StatusCodes.Status200OK);
         
         app.MapPost("/api/payments", MakePayment)
@@ -20,62 +20,75 @@ public static class PaymentEndpoints
             .Produces<PostPaymentResponse>(StatusCodes.Status200OK);
     }
 
-    private static async Task<IResult> GetPaymentDetails(
+    private static async Task<IResult> GetPayment(
         [FromRoute] Guid id,
         [FromServices] IPaymentService paymentService)
     {
         var result = await paymentService.GetPayment(id);
         
-        if (result.Status is Status.Success)
-        {
-            return Results.Ok(new GetPaymentResponse
-            {
-                Id = id,
-                ExpiryMonth = result.Data!.ExpiryMonth,
-                ExpiryYear = result.Data.ExpiryYear,
-                Currency = result.Data.Currency,
-                Amount = result.Data.Amount,
-                CardNumberLastFour = result.Data.CardNumber[^4..],
-                Status = Enum.Parse<PaymentStatus>(result.Data!.Status.ToString()),
-            });
-        }
-
         return result.Status switch
         {
-            Status.Error => Results.Problem(result.Message, statusCode: StatusCodes.Status500InternalServerError),
-            _ => Results.Problem(result.Message, statusCode: StatusCodes.Status500InternalServerError)
+            Status.Success => Results.Ok(MapToGetPaymentResponse(result.Data!)),
+            Status.NotFound => Results.Problem(title: result.Message, statusCode: StatusCodes.Status404NotFound),
+            _ => Results.Problem("Internal server error", statusCode: StatusCodes.Status500InternalServerError)
         };
     }
-    
+
     private static async Task<IResult> MakePayment(
         [FromBody] PostPaymentRequest request,
-        [FromServices] IPaymentService paymentService)
+        [FromServices] IPaymentService paymentService,
+        [FromServices] PostPaymentRequestValidator validator)
     {
-        var payment = new Domain.Models.Payment
+        var validationResult = await validator.Validate(request);
+        if (!validationResult.IsValid)
+        {
+            return Results.ValidationProblem(validationResult.Errors, title: "Payment rejected");
+        }
+        
+        var result = await paymentService.MakePayment(new Domain.Models.Payment 
         {
             Amount = request.Amount,
             ExpiryMonth = request.ExpiryMonth,
             ExpiryYear = request.ExpiryYear,
             Currency = request.Currency,
             CardNumber = request.CardNumber,
-            Cvv = request.Cvv,
-        };
-        
-        var result = await paymentService.MakePayment(payment);
-
-        if (result.Status is Status.Success)
-        {
-            return Results.Ok(new PostPaymentResponse
-            {
-                Id = result.Data!.Id,
-                Status = PaymentStatus.Authorized
-            });
-        }
+            Cvv = request.Cvv
+        });
 
         return result.Status switch
         {
-            Status.Error => Results.Problem(result.Message, statusCode: StatusCodes.Status500InternalServerError),
-            _ => Results.Problem(result.Message, statusCode: StatusCodes.Status500InternalServerError)
+            Status.Success => Results.Ok(MapToPostPaymentResponse(result.Data!)),
+            Status.Unauthorized => Results.Problem(title: "Payment declined", detail: result.Message, statusCode: StatusCodes.Status422UnprocessableEntity),
+            Status.Error => Results.Problem(result.Message, statusCode: StatusCodes.Status503ServiceUnavailable),
+            _ => Results.Problem("Internal server error", statusCode: StatusCodes.Status500InternalServerError)
+        };
+    }
+    
+    private static GetPaymentResponse MapToGetPaymentResponse(Domain.Models.Payment payment)
+    {
+        return new GetPaymentResponse
+        {
+            Id = payment.Id,
+            ExpiryMonth = payment.ExpiryMonth,
+            ExpiryYear = payment.ExpiryYear,
+            Currency = payment.Currency,
+            Amount = payment.Amount,
+            CardNumberLastFour = payment.CardNumber[^4..],
+            Status = Enum.Parse<PaymentStatus>(payment!.Status.ToString())
+        };
+    }
+
+    private static PostPaymentResponse MapToPostPaymentResponse(Domain.Models.Payment payment)
+    {
+        return new PostPaymentResponse
+        {
+            Id = payment.Id,
+            Status = Enum.Parse<PaymentStatus>(payment.Status.ToString()),
+            CardNumberLastFour = payment.CardNumber[^4..],
+            ExpiryMonth = payment.ExpiryMonth,
+            ExpiryYear = payment.ExpiryYear,
+            Currency = payment.Currency,
+            Amount = payment.Amount
         };
     }
 }
