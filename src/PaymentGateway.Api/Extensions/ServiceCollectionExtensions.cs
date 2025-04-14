@@ -3,8 +3,9 @@ using PaymentGateway.Api.Domain.Services;
 using PaymentGateway.Api.Features.Payment;
 using PaymentGateway.Api.Infrastructure.Clients.BankApiClient;
 using PaymentGateway.Api.Infrastructure.Storage;
-using PaymentGateway.Api.Ports;
-using PaymentGateway.Api.Ports.Clients;
+using PaymentGateway.Api.Ports.Clients.BankApiClient;
+using PaymentGateway.Api.Ports.Services;
+using PaymentGateway.Api.Ports.Storage;
 
 namespace PaymentGateway.Api.Extensions;
 

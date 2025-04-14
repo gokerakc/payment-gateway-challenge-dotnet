@@ -1,6 +1,6 @@
 ﻿using PaymentGateway.Api.Common;
 
-namespace PaymentGateway.Api.Ports.Clients;
+namespace PaymentGateway.Api.Ports.Clients.BankApiClient;
 
 public record ProcessPaymentResult(string AuthorizationCode, Status Status, string Message) : Result(Status, Message)
 {

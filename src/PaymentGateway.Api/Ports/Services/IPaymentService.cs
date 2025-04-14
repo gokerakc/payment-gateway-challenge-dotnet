@@ -1,7 +1,6 @@
-﻿using PaymentGateway.Api.Domain;
-using PaymentGateway.Api.Domain.Models;
+﻿using PaymentGateway.Api.Domain.Models;
 
-namespace PaymentGateway.Api.Ports;
+namespace PaymentGateway.Api.Ports.Services;
 
 public interface IPaymentService
 {

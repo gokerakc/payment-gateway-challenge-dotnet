@@ -1,5 +1,5 @@
 using PaymentGateway.Api.Domain.Models;
-using PaymentGateway.Api.Ports.Clients;
+using PaymentGateway.Api.Ports.Clients.BankApiClient;
 
 namespace PaymentGateway.IntegrationTests.Mocks;
 

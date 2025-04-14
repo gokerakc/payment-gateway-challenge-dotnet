@@ -2,8 +2,8 @@ using NSubstitute;
 using PaymentGateway.Api.Common;
 using PaymentGateway.Api.Domain.Models;
 using PaymentGateway.Api.Domain.Services;
-using PaymentGateway.Api.Ports;
-using PaymentGateway.Api.Ports.Clients;
+using PaymentGateway.Api.Ports.Clients.BankApiClient;
+using PaymentGateway.Api.Ports.Storage;
 
 namespace PaymentGateway.UnitTests;
 

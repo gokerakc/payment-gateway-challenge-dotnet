@@ -1,5 +1,5 @@
 ﻿using PaymentGateway.Api.Domain.Models;
-using PaymentGateway.Api.Ports;
+using PaymentGateway.Api.Ports.Storage;
 
 namespace PaymentGateway.Api.Infrastructure.Storage;
 

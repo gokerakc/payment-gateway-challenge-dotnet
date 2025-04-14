@@ -2,7 +2,7 @@
 
 using PaymentGateway.Api.Common;
 using PaymentGateway.Api.Features.Payment.Contracts;
-using PaymentGateway.Api.Ports;
+using PaymentGateway.Api.Ports.Services;
 
 namespace PaymentGateway.Api.Features.Payment;
 

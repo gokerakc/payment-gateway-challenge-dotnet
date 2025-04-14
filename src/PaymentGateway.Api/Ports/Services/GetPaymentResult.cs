@@ -1,7 +1,7 @@
 ﻿using PaymentGateway.Api.Common;
 using PaymentGateway.Api.Domain.Models;
 
-namespace PaymentGateway.Api.Domain;
+namespace PaymentGateway.Api.Ports.Services;
 
 public record GetPaymentResult(Payment? Data, Status Status, string Message) : Result(Status, Message)
 {

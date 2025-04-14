@@ -1,8 +1,7 @@
 ﻿using System.Net.Http.Headers;
-
 using PaymentGateway.Api.Constants;
 using PaymentGateway.Api.Domain.Models;
-using PaymentGateway.Api.Ports.Clients;
+using PaymentGateway.Api.Ports.Clients.BankApiClient;
 
 namespace PaymentGateway.Api.Infrastructure.Clients.BankApiClient;
 
