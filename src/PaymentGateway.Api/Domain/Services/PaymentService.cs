@@ -26,12 +26,13 @@ public class PaymentService : IPaymentService
                 _paymentsRepository.Add(payment);
                 return MakePaymentResult.Success(payment);
             case Status.Unauthorized:
-                return MakePaymentResult.Unauthorized();
-            case Status.Error:
-                return MakePaymentResult.Error(processPaymentResult.Message);
+                payment.Status = PaymentStatus.Declined;
+                _paymentsRepository.Add(payment);
+                return MakePaymentResult.Unauthorized(payment);
             case Status.NotFound:
+            case Status.Error:
             default:
-                throw new ArgumentOutOfRangeException();
+                return MakePaymentResult.Error(processPaymentResult.Message);
         }
     }
 

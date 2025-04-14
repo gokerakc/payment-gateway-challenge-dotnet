@@ -57,8 +57,7 @@ public static class PaymentEndpoints
 
         return result.Status switch
         {
-            Status.Success => Results.Ok(MapToPostPaymentResponse(result.Data!)),
-            Status.Unauthorized => Results.Problem(title: "Payment declined", detail: result.Message, statusCode: StatusCodes.Status422UnprocessableEntity),
+            Status.Success or Status.Unauthorized => Results.Ok(MapToPostPaymentResponse(result.Data!)),
             Status.Error => Results.Problem(result.Message, statusCode: StatusCodes.Status503ServiceUnavailable),
             _ => Results.Problem("Internal server error", statusCode: StatusCodes.Status500InternalServerError)
         };
