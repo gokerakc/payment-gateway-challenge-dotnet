@@ -19,6 +19,12 @@ public class PaymentService : IPaymentService
 
     public async Task<MakePaymentResult> MakePayment(Payment payment)
     {
+        var existingPayment = _paymentsRepository.Get(payment.Id);
+        if (existingPayment != null)
+        {
+            return MakePaymentResult.Conflict(existingPayment);
+        }
+        
         var processPaymentResult = await _bankApiClient.ProcessPayment(payment);
         switch (processPaymentResult.Status)
         {

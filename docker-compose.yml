@@ -1,6 +1,16 @@
 version: "3.8"
 
 services:
+  paymentgateway.api:
+    container_name: paymentgateway.api
+    build: .
+    restart: always
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - "5001:8080"
+    depends_on:
+      - bank_simulator
   bank_simulator:
     container_name: bank_simulator
     image: bbyars/mountebank:2.8.1

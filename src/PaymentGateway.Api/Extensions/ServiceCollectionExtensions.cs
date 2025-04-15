@@ -28,7 +28,7 @@ public static class ServiceCollectionExtensions
         {
             client.BaseAddress = new Uri("http://localhost:8080/");
             client.DefaultRequestHeaders.Add("Accept", "application/json");
-        });
+        }).AddStandardResilienceHandler();
         
 
         return services;

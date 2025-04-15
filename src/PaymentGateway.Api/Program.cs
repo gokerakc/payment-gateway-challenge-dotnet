@@ -1,7 +1,9 @@
 using System.Text.Json.Serialization;
 
+using PaymentGateway.Api.Exceptions;
 using PaymentGateway.Api.Extensions;
 using PaymentGateway.Api.Features.Payment;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +11,18 @@ builder.Services.ConfigureHttpJsonOptions(options =>
 {
     options.SerializerOptions.Converters.Add(new JsonStringEnumConverter());
 });
+
+builder.Host.UseSerilog((_, services, configuration) =>
+{
+    configuration
+        .MinimumLevel.Information()
+        .Enrich.FromLogContext()
+        .WriteTo.Console(
+            outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {Message:lj} {Properties:j}{NewLine}{Exception}");
+});
+
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+builder.Services.AddProblemDetails();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -31,6 +45,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseExceptionHandler();
+
+app.UseSerilogRequestLogging();
+
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
@@ -40,9 +58,3 @@ app.MapPaymentEndpoints();
 app.Run();
 
 public partial class Program;
-
-// TODO IDEAS:
-// add serilog, use structured logging
-// use global error handling
-// use polly retries
-// introduce idempotency key

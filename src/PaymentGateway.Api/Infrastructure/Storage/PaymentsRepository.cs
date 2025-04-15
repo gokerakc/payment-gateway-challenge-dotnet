@@ -9,10 +9,8 @@ public class PaymentsRepository : IPaymentsRepository
     
     public Guid Add(Payment payment)
     {
-        var id = Guid.NewGuid();
-        payment.Id = id;
-        _payments.Add(id, payment);
-        return id;
+        _payments.Add(payment.Id, payment);
+        return payment.Id;
     }
 
     public Payment? Get(Guid id)

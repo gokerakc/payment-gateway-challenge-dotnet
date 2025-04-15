@@ -11,6 +11,9 @@ public record MakePaymentResult(Payment? Data, Status Status, string Message) : 
     public static MakePaymentResult Unauthorized(Payment data)
         => new MakePaymentResult(data, Status.Unauthorized, "The payment was declined by the call to the acquiring bank");
     
+    public static MakePaymentResult Conflict(Payment data)
+        => new MakePaymentResult(data, Status.Conflict, string.Empty);
+    
     public static MakePaymentResult Error(string message)
         => new MakePaymentResult(Data: null, Status.Error, message);
 }

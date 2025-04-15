@@ -4,6 +4,8 @@ using PaymentGateway.Api.Common;
 using PaymentGateway.Api.Features.Payment.Contracts;
 using PaymentGateway.Api.Ports.Services;
 
+using Serilog;
+
 namespace PaymentGateway.Api.Features.Payment;
 
 public static class PaymentEndpoints
@@ -12,18 +14,30 @@ public static class PaymentEndpoints
     {
         app.MapGet("/api/payments/{id:guid}", GetPayment)
             .WithName("GetPayment")
-            .Produces<GetPaymentResponse>(StatusCodes.Status200OK);
-        
+            .Produces<GetPaymentResponse>(StatusCodes.Status200OK)
+            .Produces(statusCode: StatusCodes.Status404NotFound)
+            .ProducesProblem(statusCode: StatusCodes.Status500InternalServerError);
+
+
         app.MapPost("/api/payments", MakePayment)
             .WithName("MakePayment")
             .Accepts<PostPaymentRequest>("application/json")
-            .Produces<PostPaymentResponse>(StatusCodes.Status200OK);
+            .Produces<PostPaymentResponse>(StatusCodes.Status200OK)
+            .Produces<PostPaymentResponse>(StatusCodes.Status409Conflict)
+            .Produces(statusCode: StatusCodes.Status503ServiceUnavailable)
+            .ProducesValidationProblem(statusCode: StatusCodes.Status400BadRequest)
+            .ProducesProblem(statusCode: StatusCodes.Status500InternalServerError);
     }
 
     private static async Task<IResult> GetPayment(
         [FromRoute] Guid id,
-        [FromServices] IPaymentService paymentService)
+        [FromHeader(Name = "x-merchant-id")] string? merchantId,
+        [FromServices] IPaymentService paymentService,
+        [FromServices] IDiagnosticContext diagnosticContext)
     {
+        diagnosticContext.Set("PaymentId", id.ToString());
+        diagnosticContext.Set("MerchantId", merchantId ?? string.Empty);
+
         var result = await paymentService.GetPayment(id);
         
         return result.Status switch
@@ -36,17 +50,25 @@ public static class PaymentEndpoints
 
     private static async Task<IResult> MakePayment(
         [FromBody] PostPaymentRequest request,
+        [FromHeader(Name = "x-idempotency-token")] Guid? idempotencyToken,
+        [FromHeader(Name = "x-merchant-id")] string? merchantId,
         [FromServices] IPaymentService paymentService,
-        [FromServices] PostPaymentRequestValidator validator)
+        [FromServices] PostPaymentRequestValidator validator,
+        [FromServices] IDiagnosticContext diagnosticContext)
     {
         var validationResult = await validator.Validate(request);
         if (!validationResult.IsValid)
         {
             return Results.ValidationProblem(validationResult.Errors, title: "Payment rejected");
         }
-        
+
+        var paymentId = idempotencyToken ?? Guid.NewGuid();
+        diagnosticContext.Set("PaymentId", paymentId.ToString());
+        diagnosticContext.Set("MerchantId", merchantId ?? string.Empty);
+
         var result = await paymentService.MakePayment(new Domain.Models.Payment 
         {
+            Id = idempotencyToken ?? Guid.NewGuid(),
             Amount = request.Amount,
             ExpiryMonth = request.ExpiryMonth,
             ExpiryYear = request.ExpiryYear,
@@ -58,6 +80,7 @@ public static class PaymentEndpoints
         return result.Status switch
         {
             Status.Success or Status.Unauthorized => Results.Ok(MapToPostPaymentResponse(result.Data!)),
+            Status.Conflict => Results.Conflict(MapToPostPaymentResponse(result.Data!)),
             Status.Error => Results.Problem(result.Message, statusCode: StatusCodes.Status503ServiceUnavailable),
             _ => Results.Problem("Internal server error", statusCode: StatusCodes.Status500InternalServerError)
         };
