@@ -45,8 +45,8 @@ dotnet run --project src/PaymentGateway.Api
 ```
 
 The API will be available at:
-- HTTPS: https://localhost:5001
-- Swagger UI: https://localhost:5001/swagger
+- HTTP: http://localhost:5001
+- Swagger UI: http://localhost:5001/swagger
 
 ### Running with Docker
 

@@ -19,14 +19,17 @@ public static class ServiceCollectionExtensions
         return services;
     }
     
-    public static IServiceCollection AddInfrastructureServices(this IServiceCollection services)
+    public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddSingleton<IPaymentsRepository, PaymentsRepository>();
         services.AddSingleton<IBankApiClient, BankApiClient>();
 
+        var baseAddress = configuration.GetValue<string>("BankApi:BaseUrl") 
+                          ?? throw new ArgumentException("BankApi:BaseUrl not set!!!");
+        
         services.AddHttpClient(ClientNames.BankApiClient, client =>
         {
-            client.BaseAddress = new Uri("http://localhost:8080/");
+            client.BaseAddress = new Uri(baseAddress);
             client.DefaultRequestHeaders.Add("Accept", "application/json");
         }).AddStandardResilienceHandler();
         
