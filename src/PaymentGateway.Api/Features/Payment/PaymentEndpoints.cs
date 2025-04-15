@@ -15,18 +15,17 @@ public static class PaymentEndpoints
         app.MapGet("/api/payments/{id:guid}", GetPayment)
             .WithName("GetPayment")
             .Produces<GetPaymentResponse>(StatusCodes.Status200OK)
-            .Produces(statusCode: StatusCodes.Status404NotFound)
-            .ProducesProblem(statusCode: StatusCodes.Status500InternalServerError);
-
+            .Produces(StatusCodes.Status404NotFound)
+            .ProducesProblem(StatusCodes.Status500InternalServerError);
 
         app.MapPost("/api/payments", MakePayment)
             .WithName("MakePayment")
             .Accepts<PostPaymentRequest>("application/json")
             .Produces<PostPaymentResponse>(StatusCodes.Status200OK)
             .Produces<PostPaymentResponse>(StatusCodes.Status409Conflict)
-            .Produces(statusCode: StatusCodes.Status503ServiceUnavailable)
             .ProducesValidationProblem(statusCode: StatusCodes.Status400BadRequest)
-            .ProducesProblem(statusCode: StatusCodes.Status500InternalServerError);
+            .ProducesProblem(StatusCodes.Status500InternalServerError)
+            .ProducesProblem(StatusCodes.Status503ServiceUnavailable);
     }
 
     private static async Task<IResult> GetPayment(

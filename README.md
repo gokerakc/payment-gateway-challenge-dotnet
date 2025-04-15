@@ -2,15 +2,19 @@
 
 A .NET-based payment processing gateway that validates payment requests, processes them through a bank, and enables payment retrieval.
 
-## Features
+## Core Features
+- Process payments with card validation
+- Payment retrieval by ID with masked card details
+- Idempotent payment processing
 
-- Process payments with credit card details
-- Retrieve payment details by ID
-- Validate payment requests
-- Bank integration simulation
-- Structured logging with Serilog
-- Global exception handling
-- OpenAPI documentation (Swagger)
+
+## Considerations
+- Add authentication/authorization
+- Implement mediator design using MediatR
+- Implement rate limiting
+- Add API key validation
+- Encrypt sensitive data
+
 
 ## Prerequisites
 
@@ -73,6 +77,44 @@ Run specific test project:
 dotnet test test/PaymentGateway.UnitTests
 ```
 
+## Testing with Postman
+
+A Postman collection is included to help you test the API endpoints manually.
+
+1. Import the collection:
+   - Open Postman
+   - Click "Import"
+   - Select `PaymentGateway.postman_collection.json` from the repository root
+
+2. Configure environment variables (optional):
+   - Create a new environment in Postman
+   - Set the following variables:
+     - `baseUrl`: `http://localhost:5001`
+     - `merchantId`: Your merchant ID
+     - `idempotencyToken`: A valid GUID
+
+3. Run the requests:
+   - **Make Payment**: Creates a new payment
+     - Success case: Even card number (e.g., 4111111111111111)
+     - Decline case: Odd card number (e.g., 4111111111111112)
+     - Service temporarily not available case: Card number ends with 0 (e.g., 4111111111111110)
+   - **Get Payment**: Retrieves payment details using the payment ID from the previous response
+
+Note: Ensure the API is running (either locally or via Docker) before executing the requests.
+
+Example successful payment response:
+```json
+{
+    "id": "89199bd0-1ab7-461f-a318-81c41ae9b516",
+    "status": "Authorized",
+    "cardNumberLastFour": "3673",
+    "expiryMonth": 5,
+    "expiryYear": 2027,
+    "currency": "GBP",
+    "amount": 5000
+}
+```
+
 ## API Endpoints
 
 ### Make Payment
@@ -93,11 +135,39 @@ x-idempotency-token: 123e4567-e89b-12d3-a456-426614174000
 }
 ```
 
+| Status Code | Description |
+|------------|-------------|
+| 200 OK | Payment processed successfully. Returns payment details including status (Authorized/Declined) |
+| 400 Bad Request | Invalid request payload or validation failure (e.g., invalid card number, expired card) |
+| 409 Conflict | Payment with the same idempotency token already exists |
+| 500 Internal Server Error | Unexpected server-side error |
+| 503 Service Unavailable | Bank service is temporarily unavailable |
+
 ### Retrieve Payment
 
 ```http
 GET /api/payments/{paymentId}
 x-merchant-id: your-merchant-id
+```
+
+| Status Code | Description |
+|------------|-------------|
+| 200 OK | Payment found and returned successfully |
+| 404 Not Found | Payment with the specified ID does not exist |
+| 500 Internal Server Error | Unexpected server-side error |
+
+
+## Errors
+
+All error responses follow the RFC 7807 Problem Details standard:
+
+```json
+{
+    "type": "https://tools.ietf.org/html/rfc9110#section-15.6.4",
+    "title": "Error title",
+    "status": 400,
+    "detail": "Detailed error message"
+}
 ```
 
 ## Project Structure
@@ -137,6 +207,5 @@ PaymentGateway.sln
   - Allows safe retry of failed requests
   - Token must be a valid GUID
 - Merchant identification via x-merchant-id header
-  - Enables multi-tenant support
   - Helps with request tracing and logging
   - Used for diagnostic context in structured logging
