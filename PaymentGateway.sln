@@ -9,7 +9,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PaymentGateway.Api", "src\P
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{1EF69307-274F-458E-BBE8-4D390512A8C6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PaymentGateway.Api.Tests", "test\PaymentGateway.Api.Tests\PaymentGateway.Api.Tests.csproj", "{3A92D8D6-0359-4752-91AE-D8A59622518A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PaymentGateway.IntegrationTests", "test\PaymentGateway.IntegrationTests\PaymentGateway.IntegrationTests.csproj", "{E0D81221-072B-490D-BFCA-6C9E117E05D7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PaymentGateway.UnitTests", "test\PaymentGateway.UnitTests\PaymentGateway.UnitTests.csproj", "{E536CFA3-C47E-4A67-9CAC-ED97D2625C32}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -24,13 +26,18 @@ Global
 		{3CD9AAA2-2097-4874-9C40-FFDE26EE8E43}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3CD9AAA2-2097-4874-9C40-FFDE26EE8E43}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3CD9AAA2-2097-4874-9C40-FFDE26EE8E43}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3A92D8D6-0359-4752-91AE-D8A59622518A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3A92D8D6-0359-4752-91AE-D8A59622518A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3A92D8D6-0359-4752-91AE-D8A59622518A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3A92D8D6-0359-4752-91AE-D8A59622518A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E0D81221-072B-490D-BFCA-6C9E117E05D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E0D81221-072B-490D-BFCA-6C9E117E05D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E0D81221-072B-490D-BFCA-6C9E117E05D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E0D81221-072B-490D-BFCA-6C9E117E05D7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E536CFA3-C47E-4A67-9CAC-ED97D2625C32}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E536CFA3-C47E-4A67-9CAC-ED97D2625C32}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E536CFA3-C47E-4A67-9CAC-ED97D2625C32}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E536CFA3-C47E-4A67-9CAC-ED97D2625C32}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{3CD9AAA2-2097-4874-9C40-FFDE26EE8E43} = {F36BD266-CD75-4438-9BF9-CD91CDB18F2B}
-		{3A92D8D6-0359-4752-91AE-D8A59622518A} = {1EF69307-274F-458E-BBE8-4D390512A8C6}
+		{E0D81221-072B-490D-BFCA-6C9E117E05D7} = {1EF69307-274F-458E-BBE8-4D390512A8C6}
+		{E536CFA3-C47E-4A67-9CAC-ED97D2625C32} = {1EF69307-274F-458E-BBE8-4D390512A8C6}
 	EndGlobalSection
 EndGlobal
