@@ -7,6 +7,7 @@ services:
     restart: always
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+      - BankApi__BaseUrl=http://bank_simulator:8080/
     ports:
       - "5001:8080"
     depends_on:
@@ -22,4 +23,3 @@ services:
       - type: bind
         source: ./imposters
         target: /imposters
-      

@@ -34,7 +34,7 @@ builder.Services.AddAuthorization();
 builder.Services.AddDomainServices();
 
 // Add infra specific dependencies (databases, clients, messaging, etc.)
-builder.Services.AddInfrastructureServices();
+builder.Services.AddInfrastructureServices(builder.Configuration);
 
 var app = builder.Build();
 
