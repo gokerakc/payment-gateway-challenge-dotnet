@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
 using PaymentGateway.Api.Common;
+using PaymentGateway.Api.Domain.Services;
 using PaymentGateway.Api.Features.Payment.Contracts;
-using PaymentGateway.Api.Ports.Services;
 
 using Serilog;
 
