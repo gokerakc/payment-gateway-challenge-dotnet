@@ -179,17 +179,7 @@ All error responses follow the RFC 7807 Problem Details standard:
 ├── .editorconfig                     # Code style rules
 ├── .gitignore                        # Git ignore rules
 ├── PaymentGateway.sln                # Solution file
-├── PaymentGateway.postman_collection.json # Postman collection for testing
-├── README.md                        # Project documentation
-└── docker-compose.yml               # Docker compose configuration
+├── payment-gateway.postman_collection.json # Postman collection for testing
+├── README.md                         # Project documentation
+└── docker-compose.yml                # Docker compose configuration
 ```
-
-### Key Files and Directories
-
-- `src/` - Contains the main application code
-- `test/` - Contains all test projects
-- `imposters/` - Bank simulator configuration (do not modify)
-- `.editorconfig` - Ensures consistent code formatting (do not modify)
-- `Directory.Build.props` - Shared build settings and package versions
-- `docker-compose.yml` - Configures the API and bank simulator services
-- `PaymentGateway.postman_collection.json` - API test collection for Postman
