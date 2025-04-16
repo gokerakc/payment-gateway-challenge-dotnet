@@ -1,7 +1,6 @@
 ﻿using PaymentGateway.Api.Common;
 using PaymentGateway.Api.Domain.Models;
 using PaymentGateway.Api.Ports.Clients.BankApiClient;
-using PaymentGateway.Api.Ports.Services;
 using PaymentGateway.Api.Ports.Storage;
 
 namespace PaymentGateway.Api.Domain.Services;
