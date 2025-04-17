@@ -6,6 +6,7 @@ public enum Status
     NotFound,
     Unauthorized,
     Conflict,
+    Invalid,
     Error
 }
 

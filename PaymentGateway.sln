@@ -13,6 +13,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PaymentGateway.IntegrationT
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PaymentGateway.UnitTests", "test\PaymentGateway.UnitTests\PaymentGateway.UnitTests.csproj", "{E536CFA3-C47E-4A67-9CAC-ED97D2625C32}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PaymentGateway.Core", "src\PaymentGateway.Core\PaymentGateway.Core.csproj", "{EA279648-6823-486A-B21E-16DCC5B4BD4E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PaymentGateway.Infrastructure", "src\PaymentGateway.Infrastructure\PaymentGateway.Infrastructure.csproj", "{5B1DA3B3-49B5-4A2D-ACD7-02EBA727D522}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -34,10 +38,20 @@ Global
 		{E536CFA3-C47E-4A67-9CAC-ED97D2625C32}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E536CFA3-C47E-4A67-9CAC-ED97D2625C32}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E536CFA3-C47E-4A67-9CAC-ED97D2625C32}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EA279648-6823-486A-B21E-16DCC5B4BD4E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA279648-6823-486A-B21E-16DCC5B4BD4E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA279648-6823-486A-B21E-16DCC5B4BD4E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EA279648-6823-486A-B21E-16DCC5B4BD4E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5B1DA3B3-49B5-4A2D-ACD7-02EBA727D522}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5B1DA3B3-49B5-4A2D-ACD7-02EBA727D522}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5B1DA3B3-49B5-4A2D-ACD7-02EBA727D522}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5B1DA3B3-49B5-4A2D-ACD7-02EBA727D522}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{3CD9AAA2-2097-4874-9C40-FFDE26EE8E43} = {F36BD266-CD75-4438-9BF9-CD91CDB18F2B}
 		{E0D81221-072B-490D-BFCA-6C9E117E05D7} = {1EF69307-274F-458E-BBE8-4D390512A8C6}
 		{E536CFA3-C47E-4A67-9CAC-ED97D2625C32} = {1EF69307-274F-458E-BBE8-4D390512A8C6}
+		{EA279648-6823-486A-B21E-16DCC5B4BD4E} = {F36BD266-CD75-4438-9BF9-CD91CDB18F2B}
+		{5B1DA3B3-49B5-4A2D-ACD7-02EBA727D522} = {F36BD266-CD75-4438-9BF9-CD91CDB18F2B}
 	EndGlobalSection
 EndGlobal

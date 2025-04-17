@@ -2,10 +2,12 @@
 using System.Net.Http.Json;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using PaymentGateway.Api.Domain.Models;
-using PaymentGateway.Api.Features.Payment.Contracts;
 
-using PaymentStatus = PaymentGateway.Api.Domain.Models.PaymentStatus;
+using PaymentGateway.Api.Endpoints.CreatePayment.Contracts;
+using PaymentGateway.Api.Endpoints.GetPayment.Contracts;
+using PaymentGateway.Core.Models;
+
+using PaymentStatus = PaymentGateway.Core.Models.PaymentStatus;
 
 namespace PaymentGateway.IntegrationTests.Features;
 
@@ -45,7 +47,7 @@ public class PaymentEndpointTests
         Assert.Equal(paymentResponse.ExpiryYear, payment.ExpiryYear);
         Assert.Equal(paymentResponse.Currency, payment.Currency);
         Assert.Equal(paymentResponse.CardNumberLastFour, payment.CardNumber[^4..]);
-        Assert.Equal(paymentResponse.Status, Enum.Parse<Api.Features.Payment.Contracts.PaymentStatus>(payment.Status.ToString()));
+        Assert.Equal(paymentResponse.Status, Enum.Parse<Api.Endpoints.Shared.Contract.PaymentStatus>(payment.Status.ToString()));
     }
 
     [Fact]
@@ -62,7 +64,7 @@ public class PaymentEndpointTests
     }
 
     [Fact]
-    public async Task MakePayment_WhenBankAccepts_ThenReturn200WithAuthorizedStatus()
+    public async Task CreatePayment_WhenBankAccepts_ThenReturn200WithAuthorizedStatus()
     {
         // Arrange
         var request = CreateValidPostPaymentRequest();
@@ -76,7 +78,7 @@ public class PaymentEndpointTests
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         Assert.NotNull(result);
         Assert.NotEqual(Guid.Empty, result!.Id);
-        Assert.Equal(Api.Features.Payment.Contracts.PaymentStatus.Authorized, result.Status);
+        Assert.Equal(Api.Endpoints.Shared.Contract.PaymentStatus.Authorized, result.Status);
         Assert.Equal("1111", result.CardNumberLastFour);
         Assert.Equal(request.Amount, result.Amount);
         Assert.Equal(request.Currency, result.Currency);
@@ -91,7 +93,7 @@ public class PaymentEndpointTests
     }
     
     [Fact]
-    public async Task MakePayment_WhenBankDeclines_ThenReturn200WithDeclinedStatus()
+    public async Task CreatePayment_WhenBankDeclines_ThenReturn200WithDeclinedStatus()
     {
         // Arrange
         var request = CreateValidPostPaymentRequest();
@@ -107,7 +109,7 @@ public class PaymentEndpointTests
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         Assert.NotNull(result);
         Assert.NotEqual(Guid.Empty, result!.Id);
-        Assert.Equal(Api.Features.Payment.Contracts.PaymentStatus.Declined, result.Status);
+        Assert.Equal(Api.Endpoints.Shared.Contract.PaymentStatus.Declined, result.Status);
         Assert.Equal("1112", result.CardNumberLastFour);
         Assert.Equal(request.Amount, result.Amount);
         Assert.Equal(request.Currency, result.Currency);
@@ -122,13 +124,15 @@ public class PaymentEndpointTests
     }
     
     private Payment CreateValidPayment() => new Payment
-    {
-        CardNumber = "15298378940987367",
-        ExpiryYear = _random.Next(2023, 2030),
-        ExpiryMonth = _random.Next(1, 12),
-        Amount = _random.Next(1, 10000),
-        Currency = "GBP"
-    };
+    (
+        id: Guid.NewGuid(),
+        cardNumber: "15298378940987367",
+        expiryYear: _random.Next(2023, 2030),
+        expiryMonth: _random.Next(1, 12),
+        amount: _random.Next(1, 10000),
+        currency: "GBP",
+        cvv: "123"
+    );
     
     private PostPaymentRequest CreateValidPostPaymentRequest() => new PostPaymentRequest
     {

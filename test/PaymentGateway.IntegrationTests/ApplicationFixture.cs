@@ -1,9 +1,10 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.DependencyInjection;
-using PaymentGateway.Api.Infrastructure.Storage;
-using PaymentGateway.Api.Ports.Clients.BankApiClient;
-using PaymentGateway.Api.Ports.Storage;
+
+using PaymentGateway.Api.Clients.BankApiClient;
+using PaymentGateway.Core;
+using PaymentGateway.Infrastructure.Storage;
 using PaymentGateway.IntegrationTests.Mocks;
 
 namespace PaymentGateway.IntegrationTests;

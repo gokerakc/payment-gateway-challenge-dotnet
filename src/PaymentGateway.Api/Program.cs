@@ -1,8 +1,10 @@
 using System.Text.Json.Serialization;
 
+using PaymentGateway.Api.Endpoints.CreatePayment;
+using PaymentGateway.Api.Endpoints.GetPayment;
 using PaymentGateway.Api.Exceptions;
 using PaymentGateway.Api.Extensions;
-using PaymentGateway.Api.Features.Payment;
+
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -30,11 +32,12 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddAuthorization();
 
-// Add domain specific dependencies (payment services, payment validators, etc.)
-builder.Services.AddDomainServices();
-
-// Add infra specific dependencies (databases, clients, messaging, etc.)
-builder.Services.AddInfrastructureServices(builder.Configuration);
+builder.Services.AddHttpClients(builder.Configuration);
+builder.Services.AddMediatR(configuration =>
+{
+    configuration.RegisterServicesFromAssemblies(typeof(Program).Assembly); 
+});
+builder.Services.AddInfrastructureServices();
 
 var app = builder.Build();
 
@@ -53,7 +56,8 @@ app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
-app.MapPaymentEndpoints();
+app.MapGetPaymentEndpoints();
+app.MapCreatePaymentEndpoints();
 
 app.Run();
 
