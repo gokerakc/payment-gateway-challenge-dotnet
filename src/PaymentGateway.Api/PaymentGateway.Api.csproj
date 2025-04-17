@@ -20,18 +20,4 @@
     <ProjectReference Include="..\PaymentGateway.Infrastructure\PaymentGateway.Infrastructure.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Endpoints\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Remove="Infrastructure\Clients\BankApiClient\BankApiProcessPaymentRequest.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Domain\Models\" />
-    <Folder Include="Infrastructure\Clients\BankApiClient\" />
-    <Folder Include="Ports\Storage\" />
-  </ItemGroup>
-
 </Project>
