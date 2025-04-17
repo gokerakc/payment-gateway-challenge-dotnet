@@ -1,5 +1,6 @@
-using PaymentGateway.Api.Domain.Models;
-using PaymentGateway.Api.Ports.Clients.BankApiClient;
+using PaymentGateway.Api.Clients.BankApiClient;
+using PaymentGateway.Core;
+using PaymentGateway.Core.Models;
 
 namespace PaymentGateway.IntegrationTests.Mocks;
 
