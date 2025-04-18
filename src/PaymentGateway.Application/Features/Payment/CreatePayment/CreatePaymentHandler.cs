@@ -1,23 +1,22 @@
 ﻿using MediatR;
-
-using PaymentGateway.Api.Clients.BankApiClient;
-using PaymentGateway.Api.Common;
+using PaymentGateway.Application.Common;
 using PaymentGateway.Core;
 using PaymentGateway.Core.Models;
+using Serilog;
 
-namespace PaymentGateway.Api.Features.Payment.CreatePayment;
+namespace PaymentGateway.Application.Features.Payment.CreatePayment;
 
 public class CreatePaymentHandler : IRequestHandler<CreatePaymentCommand, CreatePaymentResponse>
 {
     private readonly IBankApiClient _bankApiClient;
     private readonly IPaymentsRepository _paymentsRepository;
-    private readonly ILogger<CreatePaymentHandler> _logger;
+    
+    private readonly ILogger _logger = Log.ForContext<CreatePaymentHandler>();
 
-    public CreatePaymentHandler(IBankApiClient bankApiClient, IPaymentsRepository paymentsRepository, ILogger<CreatePaymentHandler> logger)
+    public CreatePaymentHandler(IBankApiClient bankApiClient, IPaymentsRepository paymentsRepository)
     {
         _bankApiClient = bankApiClient;
         _paymentsRepository = paymentsRepository;
-        _logger = logger;
     }
     
     public async Task<CreatePaymentResponse> Handle(CreatePaymentCommand request, CancellationToken cancellationToken)
@@ -40,17 +39,17 @@ public class CreatePaymentHandler : IRequestHandler<CreatePaymentCommand, Create
         switch (processPaymentResult.Status)
         {
             case Status.Success:
-                _logger.LogInformation("Payment {paymentId} handled successfully", request.PaymentId);
+                _logger.Information("Payment {paymentId} handled successfully", request.PaymentId);
                 payment.Status = PaymentStatus.Authorized;
                 _paymentsRepository.Add(payment);
                 return CreatePaymentResponse.Success(payment);
             case Status.Unauthorized:
-                _logger.LogInformation("Payment {paymentId} handled successfully", request.PaymentId);
+                _logger.Information("Payment {paymentId} handled successfully", request.PaymentId);
                 payment.Status = PaymentStatus.Declined;
                 _paymentsRepository.Add(payment);
                 return CreatePaymentResponse.Unauthorized(payment);
             default:
-                _logger.LogError("An error occured while handling the payment: {paymentId}", request.PaymentId);
+                _logger.Error("An error occured while handling the payment: {paymentId}", request.PaymentId);
                 return CreatePaymentResponse.Error(processPaymentResult.Message);
         }
     }

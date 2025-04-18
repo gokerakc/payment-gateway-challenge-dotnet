@@ -1,8 +1,6 @@
-﻿using PaymentGateway.Api.Common;
-using PaymentGateway.Core;
-using PaymentGateway.Core.Models;
+﻿using PaymentGateway.Application.Common;
 
-namespace PaymentGateway.Api.Clients.BankApiClient;
+namespace PaymentGateway.Application.Features.Payment;
 
 public record ProcessPaymentResult(string AuthorizationCode, Status Status, string Message) : Result(Status, Message)
 {

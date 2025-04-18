@@ -1,5 +1,6 @@
 ﻿using PaymentGateway.Api.Clients.BankApiClient;
 using PaymentGateway.Api.Constants;
+using PaymentGateway.Application.Features.Payment;
 using PaymentGateway.Core;
 using PaymentGateway.Infrastructure.Storage;
 

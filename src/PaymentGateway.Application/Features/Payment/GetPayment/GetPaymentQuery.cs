@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace PaymentGateway.Api.Features.Payment.GetPayment;
+namespace PaymentGateway.Application.Features.Payment.GetPayment;
 
 public class GetPaymentQuery(Guid paymentId) : IRequest<GetPaymentResponse>
 {

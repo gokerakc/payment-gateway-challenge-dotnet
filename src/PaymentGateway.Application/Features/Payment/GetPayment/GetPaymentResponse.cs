@@ -1,8 +1,6 @@
-﻿using PaymentGateway.Api.Common;
-using PaymentGateway.Core;
-using PaymentGateway.Core.Models;
+﻿using PaymentGateway.Application.Common;
 
-namespace PaymentGateway.Api.Features.Payment.GetPayment;
+namespace PaymentGateway.Application.Features.Payment.GetPayment;
 
 public record GetPaymentResponse(Core.Models.Payment? Data, Status Status, string Message) : Result(Status, Message)
 {

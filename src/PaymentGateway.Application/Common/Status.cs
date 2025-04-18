@@ -1,4 +1,4 @@
-﻿namespace PaymentGateway.Api.Common;
+﻿namespace PaymentGateway.Application.Common;
 
 public enum Status
 {
@@ -9,5 +9,3 @@ public enum Status
     Invalid,
     Error
 }
-
-public abstract record Result(Status Status, string Message);

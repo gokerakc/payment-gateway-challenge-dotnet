@@ -1,10 +1,6 @@
-﻿using Microsoft.Extensions.Logging.Abstractions;
-
-using NSubstitute;
-
-using PaymentGateway.Api.Clients.BankApiClient;
-using PaymentGateway.Api.Common;
-using PaymentGateway.Api.Features.Payment.GetPayment;
+﻿using NSubstitute;
+using PaymentGateway.Application.Common;
+using PaymentGateway.Application.Features.Payment.GetPayment;
 using PaymentGateway.Core;
 using PaymentGateway.Core.Models;
 

@@ -1,9 +1,7 @@
-using Microsoft.Extensions.Logging.Abstractions;
 using NSubstitute;
-
-using PaymentGateway.Api.Clients.BankApiClient;
-using PaymentGateway.Api.Common;
-using PaymentGateway.Api.Features.Payment.CreatePayment;
+using PaymentGateway.Application.Common;
+using PaymentGateway.Application.Features.Payment;
+using PaymentGateway.Application.Features.Payment.CreatePayment;
 using PaymentGateway.Core;
 using PaymentGateway.Core.Models;
 
@@ -17,7 +15,7 @@ public class CreatePaymentHandlerTests
 
     public CreatePaymentHandlerTests()
     {
-        _sut = new CreatePaymentHandler(_mockBankApiClient, _mockPaymentRepository, NullLogger<CreatePaymentHandler>.Instance);
+        _sut = new CreatePaymentHandler(_mockBankApiClient, _mockPaymentRepository);
     }
     
     [Fact]

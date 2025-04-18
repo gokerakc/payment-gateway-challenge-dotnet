@@ -10,12 +10,12 @@
       <PackageReference Include="MediatR" Version="12.5.0" />
       <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.15" />
       <PackageReference Include="Microsoft.Extensions.Http.Resilience" Version="9.4.0" />
-      <PackageReference Include="Serilog" Version="3.1.1" />
       <PackageReference Include="Serilog.AspNetCore" Version="8.0.3" />
       <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\PaymentGateway.Application\PaymentGateway.Application.csproj" />
     <ProjectReference Include="..\PaymentGateway.Core\PaymentGateway.Core.csproj" />
     <ProjectReference Include="..\PaymentGateway.Infrastructure\PaymentGateway.Infrastructure.csproj" />
   </ItemGroup>

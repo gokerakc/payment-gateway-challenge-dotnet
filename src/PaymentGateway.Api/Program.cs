@@ -1,10 +1,9 @@
 using System.Text.Json.Serialization;
-
 using PaymentGateway.Api.Endpoints.CreatePayment;
 using PaymentGateway.Api.Endpoints.GetPayment;
 using PaymentGateway.Api.Exceptions;
 using PaymentGateway.Api.Extensions;
-
+using PaymentGateway.Application.Features.Payment.CreatePayment;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,7 +13,7 @@ builder.Services.ConfigureHttpJsonOptions(options =>
     options.SerializerOptions.Converters.Add(new JsonStringEnumConverter());
 });
 
-builder.Host.UseSerilog((_, services, configuration) =>
+builder.Host.UseSerilog((_, _, configuration) =>
 {
     configuration
         .MinimumLevel.Information()
@@ -35,7 +34,7 @@ builder.Services.AddAuthorization();
 builder.Services.AddHttpClients(builder.Configuration);
 builder.Services.AddMediatR(configuration =>
 {
-    configuration.RegisterServicesFromAssemblies(typeof(Program).Assembly); 
+    configuration.RegisterServicesFromAssemblies(typeof(CreatePaymentCommand).Assembly); 
 });
 builder.Services.AddInfrastructureServices();
 
