@@ -1,7 +1,7 @@
 ﻿using System.Net.Http.Headers;
-
 using PaymentGateway.Api.Clients.BankApiClient.Contract;
 using PaymentGateway.Api.Constants;
+using PaymentGateway.Application.Features.Payment;
 using PaymentGateway.Core.Models;
 
 namespace PaymentGateway.Api.Clients.BankApiClient;
@@ -9,14 +9,12 @@ namespace PaymentGateway.Api.Clients.BankApiClient;
 public class BankApiClient : IBankApiClient
 {
     private readonly HttpClient _client;
-    private readonly ILogger<BankApiClient> _logger;
+    private readonly Serilog.ILogger _logger = Serilog.Log.ForContext<BankApiClient>();
     
     public BankApiClient(
-        IHttpClientFactory httpClientFactory,
-        ILogger<BankApiClient> logger)
+        IHttpClientFactory httpClientFactory)
     {
         _client = httpClientFactory.CreateClient(ClientNames.BankApiClient);
-        _logger = logger;
     }
     
     public async Task<ProcessPaymentResult> ProcessPayment(Payment payment)
@@ -38,7 +36,7 @@ public class BankApiClient : IBankApiClient
 
             if (!response.IsSuccessStatusCode)
             {
-                _logger.LogError(
+                _logger.Error(
                     "Bank API returned error status code {statusCode} for the payment. Payment Id: {paymentId}", 
                     response.StatusCode,
                     payment.Id);
@@ -54,7 +52,7 @@ public class BankApiClient : IBankApiClient
         }
         catch (Exception ex)
         {
-            _logger.LogError(
+            _logger.Error(
                 ex,
                 "Exception occurred while processing payment. Payment Id: {paymentId}",
                 payment.Id);

@@ -1,5 +1,4 @@
-using PaymentGateway.Api.Clients.BankApiClient;
-using PaymentGateway.Core;
+using PaymentGateway.Application.Features.Payment;
 using PaymentGateway.Core.Models;
 
 namespace PaymentGateway.IntegrationTests.Mocks;

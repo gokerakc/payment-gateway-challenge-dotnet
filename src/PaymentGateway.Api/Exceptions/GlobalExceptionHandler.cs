@@ -1,24 +1,18 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Diagnostics;
+﻿using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 
 namespace PaymentGateway.Api.Exceptions;
 
 internal sealed class GlobalExceptionHandler : IExceptionHandler
 {
-    private readonly ILogger<GlobalExceptionHandler> _logger;
-
-    public GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logger)
-    {
-        _logger = logger;
-    }
+    private readonly Serilog.ILogger _logger = Serilog.Log.ForContext<GlobalExceptionHandler>();
 
     public async ValueTask<bool> TryHandleAsync(
         HttpContext httpContext,
         Exception exception,
         CancellationToken cancellationToken)
     {
-        _logger.LogError(
+        _logger.Error(
             exception, "Exception occurred: {Message}", exception.Message);
 
         var problemDetails = exception switch

@@ -22,7 +22,7 @@ public class PostPaymentResponse
     public int ExpiryYear { get; set; }
     
     [JsonPropertyName("currency")]
-    public string Currency { get; set; }
+    public string Currency { get; set; } = string.Empty;
     
     [JsonPropertyName("amount")]
     public decimal Amount { get; set; }

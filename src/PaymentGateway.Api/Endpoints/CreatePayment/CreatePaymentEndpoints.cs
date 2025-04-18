@@ -1,9 +1,9 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-using PaymentGateway.Api.Common;
 using PaymentGateway.Api.Endpoints.CreatePayment.Contracts;
-using PaymentGateway.Api.Features.Payment.CreatePayment;
+using PaymentGateway.Application.Common;
+using PaymentGateway.Application.Features.Payment.CreatePayment;
 using PaymentGateway.Core;
 using PaymentGateway.Core.Models;
 using Serilog;

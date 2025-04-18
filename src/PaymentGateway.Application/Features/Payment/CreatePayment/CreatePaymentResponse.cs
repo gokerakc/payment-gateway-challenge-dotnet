@@ -1,8 +1,6 @@
-﻿using PaymentGateway.Api.Common;
-using PaymentGateway.Core;
-using PaymentGateway.Core.Models;
+﻿using PaymentGateway.Application.Common;
 
-namespace PaymentGateway.Api.Features.Payment.CreatePayment;
+namespace PaymentGateway.Application.Features.Payment.CreatePayment;
 
 public record CreatePaymentResponse(Core.Models.Payment? Data, Status Status, string Message, Dictionary<string, string[]>? Errors = null) : Result(Status, Message)
 {

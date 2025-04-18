@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace PaymentGateway.Api.Features.Payment.CreatePayment;
+namespace PaymentGateway.Application.Features.Payment.CreatePayment;
 
 public class CreatePaymentCommand(
     Guid paymentId,
