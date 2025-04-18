@@ -33,15 +33,16 @@ A .NET-based payment processing gateway that validates payment requests, process
 
 ```
 ├── src/
-│   ├── PaymentGateway.Api/              # API application
+│   ├── PaymentGateway.Api/              # API (UI)
 │   │   ├── Clients/                     # Http clients (BankApi)
 │   │   ├── Endpoints/                   # API endpoints by feature
 │   │   │   ├── CreatePayment/           # Payment creation endpoint
 │   │   │   └── GetPayment/              # Payment retrieval endpoint
+│   ├── PaymentGateway.Application/      # Features (business logics)
 │   |   ├── Features/                    # CQRS command and queries
 │   |   │   ├── CreatePayment/           # Payment creation command+handler
 │   |   │   └── GetPayment/              # Payment retrieval query+handler
-│   ├── PaymentGateway.Core/             # Core domain logic
+│   ├── PaymentGateway.Core/             # Core (domain)
 │   │   ├── Models/                      # Domain models (payment)
 │   │   └── Validators/                  # Domain validators (payment validator)
 │   └── PaymentGateway.Infrastructure/   # Infrastructure implementations
